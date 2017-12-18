@@ -41,15 +41,12 @@ data FizzBuzzT : (k : Nat) -> Type where
 
 fizzBuzz : (k : Nat) -> FizzBuzzT k
 fizzBuzz k
-  = case isFizz k of
-         Yes isFizzProof
-           => case isBuzz k of
-                   Yes isBuzzProof   => FizzBuzz k isFizzProof isBuzzProof
-                   No isNotBuzzProof => Fizz k isFizzProof isNotBuzzProof
-         No isNotFizzProof
-           => case isBuzz k of
-                   Yes isBuzzProof   => Buzz k isNotFizzProof isBuzzProof
-                   No isNotBuzzProof => Number k isNotFizzProof isNotBuzzProof
+    = case (isFizz k, isBuzz k) of
+           (Yes isFizzProof, No isNotBuzzProof) =>  Fizz k isFizzProof isNotBuzzProof
+           (No isNotFizzProof, Yes isBuzzProof) => Buzz k isNotFizzProof isBuzzProof
+           (Yes isFizzProof, Yes isBuzzProof) => FizzBuzz k isFizzProof isBuzzProof
+           (No isNotFizzProof, No isNotBuzzProof) => Number k isNotFizzProof isNotBuzzProof
+
 
 showFizzBuzz : Nat -> String
 showFizzBuzz k = case fizzBuzz k of
